@@ -1,4 +1,4 @@
-import UserManager from '../Model/UserManager';
+import { UserManager } from '../Model/UserManager';
 
 export default class LoginController {
 	manager: UserManager;
