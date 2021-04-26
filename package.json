@@ -1,0 +1,35 @@
+{
+  "name": "legotracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "start": "concurrently --kill-others \"npm run watch\" \"npm run serve\"",
+    "watch": "webpack watch",
+    "serve": "firebase serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WilbertFeldman/LegoTracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WilbertFeldman/LegoTracker/issues"
+  },
+  "homepage": "https://github.com/WilbertFeldman/LegoTracker#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "concurrently": "^6.0.2",
+    "eslint": "^7.25.0",
+    "ts-loader": "^9.1.1",
+    "typescript": "^4.2.4",
+    "webpack": "^5.35.1",
+    "webpack-cli": "^4.6.0"
+  },
+  "dependencies": {
+    "firebase": "^8.4.2"
+  }
+}
