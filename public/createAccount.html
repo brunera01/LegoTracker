@@ -12,7 +12,7 @@
 
 <body>
   <nav class="navbar navbar-dark fixed-top">
-    <a class="navbar-brand" href="#">Lego Tracker - Login</a>
+    <a class="navbar-brand" href="#">Lego Tracker - Create Account</a>
   </nav>
   <div id="mainPage" class="container page-container">
     <div class="form-group">
@@ -23,8 +23,14 @@
       <label for="InputPassword1">Password</label>
       <input type="password" class="form-control" id="InputPassword1" placeholder="Password">
     </div>
-    <button id="LogInButton" type="submit" class="btn btn-primary">Log In</button>
-    <a class="btn btn-primary" href="createAccount.html" role="button">Create Account</a>
+    <div class="form-group">
+        <label for="InputKey">User Key</label>
+        <input class="form-control" id="InputKey" placeholder="Key">
+        <small id="emailHelp" class="form-text text-muted">Create an account <a href=https://rebrickable.com target="_blank">here</a> and generate an API key</small>
+        <small class="form-text text-muted">To generate an API key, go your account Settings, and select 'Generate new API Key' under 'API'</small>
+    </div>
+    <button id="SignUpButton" type="submit" class="btn btn-primary">Create Account</button>
+    <a class="btn btn-primary" href="index.html" role="button">Back</a>
   </div>
   <script src="build/jquery.min.js"></script>
   <script src="build/popper.js"></script>
