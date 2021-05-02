@@ -5,25 +5,44 @@ const COLLECTION_NAME = 'users';
 const API_KEY = 'apiKey';
 const UUID = 'uuid';
 
-export class UserManager {
-	User: User;
-	_ref: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>;
-	_unsubscribe: () => void; 
+export class AuthManager {
+	_user: User | null = null;
+	// _ref: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>;
+	_unsubscribe: () => void;
 
-	constructor(uid: string, username: string, password: string) {
-		this._ref = firebase.firestore().collection(COLLECTION_NAME);
-		this.User = {username: 'test', APIKey: 'test', uid: 'test'};
-		this._unsubscribe = this._ref.where(UUID, '==', uid).onSnapshot(snapshot => {
-			if(snapshot.docs.length != 1){
-				console.log('error getting user');
+	constructor() {
+		this._unsubscribe = () => { return };
+	}
+
+	beginListening(changeListener: () => void): void {
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user == null || user == undefined) {
+				this._user = null;
+				changeListener();
 				return;
 			}
-			this.User.APIKey = snapshot.docs[0].get(API_KEY);
-		});
+			this.getApiKey(user.uid).then((APIKey) => {
+				if (user.email == null) {
+					console.error('null email');
+					return;
+				}
+				this._user = { uid: user.uid, email: user.email, APIKey };
+				changeListener();
+			});
+		})
 	}
 
 	stopListening(): void {
 		this._unsubscribe();
+	}
+
+	signIn(email: string, password: string): void {
+		firebase.auth().signInWithEmailAndPassword(email, password);
+	}
+
+	async getApiKey(uid: string): Promise<string> {
+		const doc = await firebase.firestore().collection(COLLECTION_NAME).doc(uid).get();
+		return doc.get(API_KEY);
 	}
 }
 

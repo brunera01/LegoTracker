@@ -1,5 +1,5 @@
 export default interface User {
 	uid: string;
-	username: string;
-	APIKey: string;
+	email: string;
+	APIKey?: string;
 }
