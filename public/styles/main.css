@@ -15,3 +15,23 @@ body {
     width: 100%;
 }
 
+.bmd-layout-content {
+    height: 100vh;
+}
+
+.nav-tabs .nav-link, .nav-tabs .nav-link.active {
+    color: white;
+}
+#searchBar {
+    display: inline;
+    margin: auto;
+    width: 70%;
+}
+
+#searchText {
+    width: 70%;
+}
+
+.form-control, .material-icons {
+    display: inline;
+}

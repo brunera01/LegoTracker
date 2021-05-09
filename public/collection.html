@@ -10,9 +10,16 @@
   <title>My Collection</title>
 </head>
 
-  <nav class="navbar navbar-dark fixed-top">
-    <a class="navbar-brand" href="#">My Collection</a>
-    <ul class="nav nav-tabs nav-fill">
+<body>
+  <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
+    <header class="bmd-layout-header">
+      <div class="navbar navbar-dark bg-faded justify-content-start">
+        <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s2">
+          <span class="sr-only">Toggle drawer</span>
+          <i class="material-icons">menu</i>
+        </button>
+        <a class="navbar-brand" href="collection.html">&nbsp;&nbsp;My Collection</a>
+        <ul class="nav nav-tabs nav-fill">
           <li class="nav-item">
             <a class="nav-link active" href="#">Sets</a>
           </li>
@@ -20,64 +27,85 @@
             <a class="nav-link" href="#">Pieces</a>
           </li>
         </ul>
-  </nav>  
-  
-
-  <div id="listPage" class="container page-container">
-    <hr>
-    <hr>
-    <hr>
-    <hr>
-
-    <div class="row">
-        <div class="col-12 col-md-3">
-          <div class="card" data-toggle="modal" data-target = "#setInfo10276">
-              <img class="card-img-top" src="https://cdn.rebrickable.com/media/sets/10276-1/75458.jpg" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">Colosseum</p>
+      </div>
+    </header>
+    <div id="searchBar" class="justify-content-center">
+      <input id="searchText" class="form-control" type="text" placeholder="Search for LEGO">
+      <button id="searchButton" class="btn btn-primary">Search</button>
+    </div>
+    <div id="dw-s2" class="bmd-layout-drawer bg-faded">
+      <header>
+        <a class="navbar-brand">Lego Tracker</a>
+      </header>
+      <ul class="list-group">
+        <a class="list-group-item">My Collection</a>
+        <a class="list-group-item">Search Catalog</a>
+        <a class="list-group-item">View Collections</a>
+        <a class="list-group-item">Sign Out</a>
+      </ul>
+    </div>
+    <main class="bmd-layout-content">
+      <div class="container">
+        <div id="listPage" class="container page-container">
+          <div class="row">
+            <div class="col-12 col-md-4 col-lg-3">
+              <div class="card" data-toggle="modal" data-target="#setInfo10276">
+                <img class="card-img-top" src="https://cdn.rebrickable.com/media/sets/10276-1/75458.jpg"
+                  alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">Colosseum</p>
+                </div>
               </div>
-          </div>
-          <div class="modal fade" id="setInfo10276" tabindex="-1" role="dialog">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Colosseum</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <img class="img-fluid"src="https://cdn.rebrickable.com/media/sets/10276-1/75458.jpg">
-                    <p>Price: 549.99</p>
-                    <p>Theme: Creator</p>
-                    <p>Set Number: 10276</p>
-                    <p>Pieces: 9036</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Remove Set</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  </div>
+
+            </div>
+            <div class="col-12 col-md-4 col-lg-3">
+              <div class="card">
+                <img class="card-img-top" src="https://cdn.rebrickable.com/media/sets/10276-1/75458.jpg"
+                  alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">Colosseum</p>
                 </div>
               </div>
             </div>
-        </div>
-        <div class="col-12 col-md-3">
-          <div class="card">
-              <img class="card-img-top" src="https://cdn.rebrickable.com/media/sets/10276-1/75458.jpg" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">Colosseum</p>
+            <div class="col-12 col-md-4 col-lg-3">
+              <div class="card">
+                <img class="card-img-top" src="https://cdn.rebrickable.com/media/sets/10276-1/75458.jpg"
+                  alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">Colosseum</p>
+                </div>
               </div>
+            </div>
           </div>
         </div>
       </div>
-
+    </main>
   </div>
-  
-
-
-  
-
-
+  <div id="modalContainer">
+    <div class="modal fade" id="setInfo10276" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Colosseum</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <img class="img-fluid" src="https://cdn.rebrickable.com/media/sets/10276-1/75458.jpg">
+            <p>Price: 549.99</p>
+            <p>Theme: Creator</p>
+            <p>Set Number: 10276</p>
+            <p>Pieces: 9036</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Remove Set</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="build/jquery.min.js"></script>
   <script src="build/popper.js"></script>
@@ -90,7 +118,7 @@
   <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
   <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
   <script src="/__/firebase/init.js"></script>
-  <script src="scripts/main.js"></script>
+  <script src="build/bundle.js"></script>
 </body>
 
 </html>

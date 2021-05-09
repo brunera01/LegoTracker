@@ -10,6 +10,7 @@ export class UserManager {
 
 	constructor(changeListener: (user: User | null) => void) {
 		this._unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+			console.log("Here");
 			if (!user) {
 				this._user = null;
 				changeListener(null);
@@ -30,9 +31,10 @@ export class UserManager {
 		this._unsubscribe();
 	}
 
-	signIn(email: string, password: string, handleSignInFailed: () => void): void {
-		firebase.auth().signInWithEmailAndPassword(email, password).catch(() => {
-			handleSignInFailed();
+	signIn(email: string, password: string, handleSignInFailed: (error1: string) => void): void {
+		firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
+			handleSignInFailed(error.message);
+			console.error(error.message);
 		});
 	}
 
@@ -55,8 +57,12 @@ export function createUser(
 	handleCreateAccountFailed: (error: firebase.auth.Error) => void
 ): void {
 	firebase.auth().createUserWithEmailAndPassword(username, password).then(credentials => {
-		firebase.firestore().collection(COLLECTION_NAME).doc(credentials.user?.uid).set({
-			[API_KEY]: APIKey
+		if(!credentials.user) {
+			console.error("Error");
+			return;
+		}
+		firebase.firestore().collection(COLLECTION_NAME).doc(credentials.user.uid).set({
+			[API_KEY]: APIKey	
 		});
 	}).catch(error => {
 		handleCreateAccountFailed(error);

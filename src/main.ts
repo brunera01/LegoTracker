@@ -25,8 +25,10 @@ const authStateChanged = (user: User | null) => {
 	} else if (user && (document.querySelector('#loginPage') || document.querySelector('#createAccountPage'))) {
 		console.log('sign in successful');
 		//todo determine where to navigate to.
+		document.location.href=`/collection.html?uid=${user.uid}`;
 	}
 }
+
 
 const userManager = new UserManager(authStateChanged);
 if (document.querySelector('#loginPage')) {
