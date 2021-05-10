@@ -10,7 +10,7 @@ export class UserManager {
 
 	constructor(changeListener: (user: User | null) => void) {
 		this._unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-			console.log("Here");
+			console.log('Here');
 			if (!user) {
 				this._user = null;
 				changeListener(null);
@@ -58,7 +58,7 @@ export function createUser(
 ): void {
 	firebase.auth().createUserWithEmailAndPassword(username, password).then(credentials => {
 		if(!credentials.user) {
-			console.error("Error");
+			console.error('Error');
 			return;
 		}
 		firebase.firestore().collection(COLLECTION_NAME).doc(credentials.user.uid).set({

@@ -4,7 +4,7 @@ export default class LoginController {
 	constructor(manager: UserManager) {
 		const logInButton = document.querySelector('#LogInButton');
 		if (!logInButton) {
-			console.log("No logInButton");
+			console.log('No logInButton');
 			return;
 		}
 		logInButton.addEventListener('click', () => {
@@ -15,7 +15,7 @@ export default class LoginController {
 				return;
 			}
 			const handleSignInFailed = (error: string) => {
-				console.log("Error is: error");
+				console.log('Error is: error');
 				const errorMessage: HTMLDivElement | null = document.querySelector('#errorMessage');
 				if (!errorMessage) {
 					console.error('unable to find error message element');

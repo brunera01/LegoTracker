@@ -6,6 +6,7 @@ import LoginController from './Controller/LoginController';
 import CreateAccountController from './Controller/CreateAccountController'
 import User from './Data/User';
 import { UserManager } from './Model/UserManager';
+import { CollectionController } from './Controller/CollectionController';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyB0j0AJr111FHLNuH6_7lJdgo4E-h92C6c',
@@ -19,13 +20,18 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const authStateChanged = (user: User | null) => {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
 	if (!user && !document.querySelector('#loginPage') && !document.querySelector('#createAccountPage')) {
 		console.log('here');
 		document.location.href = '/';
 	} else if (user && (document.querySelector('#loginPage') || document.querySelector('#createAccountPage'))) {
 		console.log('sign in successful');
-		//todo determine where to navigate to.
-		document.location.href=`/collection.html?uid=${user.uid}`;
+		document.location.href = `/collection.html?uid=${user.uid}`;
+	} else {
+		if (user) {
+			new CollectionController(user, urlParams.get('page') ?? '1', urlParams.get('uid') ?? undefined);
+		}
 	}
 }
 
