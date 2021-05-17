@@ -25,7 +25,7 @@ export async function getItems(user: User, page: string, search?: string): Promi
 			image: set.set_img_url,
 		}))
 	};
-	console.log(result);
+	// console.log(result);
 	return result
 }
 

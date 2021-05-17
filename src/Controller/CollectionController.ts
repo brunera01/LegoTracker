@@ -5,7 +5,9 @@ import { htmlToDivElement } from '../util';
 
 export class CollectionController {
 	constructor(user: User, page: string, uid?: string) {
+		const searchButton = document.querySelector('#searchButton');
 		const searchInput = document.querySelector('#searchText');
+		console.log(searchInput);
 		if (!searchInput || !(searchInput instanceof HTMLInputElement)) {
 			console.error('could not find valid search input');
 			return;
@@ -14,14 +16,24 @@ export class CollectionController {
 			getItems(user, page, searchInput.value).then((setsResponse) => {
 				this.updateList(setsResponse.sets)
 			});
+			console.log(searchButton);
+			if (searchButton) {
+				searchButton.addEventListener("click", (event) => {
+					console.log("hello");
+					getItems(user, page, searchInput.value).then((setsResponse) => {
+						this.updateList(setsResponse.sets)
+					});
+				})
+			}	
 		}
+
 	}
 
 	updateList(sets: Set[]): void {
 		const newList = htmlToDivElement('<div id="listContainer" class="row"></div>');
 
 		for (let i = 0; i < sets.length; i++) {
-			console.log('another quote');
+			// console.log('another quote');
 			const newCard = this._createCard(sets[i]);
 			newCard.addEventListener('click', () => {
 				const yearDisplay = document.querySelector('#modalYear') as HTMLParagraphElement;
