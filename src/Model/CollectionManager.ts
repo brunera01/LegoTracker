@@ -1,32 +1,29 @@
 import { SetsResponse } from '../Data/Set';
 import User from '../Data/User';
+import Set from '../Data/Set'
+import firebase from 'firebase';
 
+
+const COLLECTION_NAME = "setInfo";
+const IMAGE = "imgUrl";
+const PIECE_COUNT = "pieces";
+const SET_NUM = "setNum";
+const YEAR = "year";
+const UID = "uid";
+const SET_NAME = "setName";
 export interface ICollectionManager {
 	getItems: (user: User, page: number) => SetsResponse;
 }
 
-export async function getItems(user: User, page: string, search?: string): Promise<SetsResponse> {
-	const { APIKey } = user;
-	console.log('page is ' + page);
-	const parameters: rebrickableSetRequest = { page, page_size: '60', search: search ?? '', ordering: '-year', min_parts: '1' };
-	const url = 'https://rebrickable.com/api/v3/lego/sets?' + new URLSearchParams(parameters).toString();
-	const response = await fetch(url, {headers: { authorization: `key ${APIKey}` }});
-	if(!response.ok){
-		//some error handling
-	}
-	const content: rebrickableResponse = await response.json();
-	const result =  {
-		hasNextPage: !!content.next,
-		sets: content.results.map((set) => ({
-			setNumber: set.set_num,
-			year: set.year,
-			name: set.name,
-			pieceCount: set.num_parts,
-			image: set.set_img_url,
-		}))
-	};
-	// console.log(result);
-	return result
+export function addToCollection(set: Set, uid: string) {
+	return firebase.firestore().collection(COLLECTION_NAME).add({
+			IMAGE: set.image,
+			PIECE_COUNT: set.pieceCount,
+			SET_NUM: set.setNumber,
+			YEAR: set.year,
+			UID: uid,
+			SET_NAME: set.name
+	});
 }
 
 interface rebrickableResponse {

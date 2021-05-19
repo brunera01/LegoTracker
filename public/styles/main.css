@@ -41,7 +41,7 @@ body {
 }
 
 .set-card {
-    height: 30vh;
+    height: 38vh;
     margin-bottom: 1rem;
 }
 
@@ -51,4 +51,12 @@ body {
 
 .card-title {
     margin-top: auto;
+}
+
+@media (max-width: 992px) {
+    .set-card {
+            max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    }
 }

@@ -30,7 +30,8 @@ const authStateChanged = (user: User | null) => {
 		document.location.href = `/collection.html?uid=${user.uid}`;
 	} else {
 		if (user) {
-			new CollectionController(user, urlParams.get('page') ?? '1', urlParams.get('uid') ?? undefined);
+			const isOnSetsPage = !!urlParams.get('set');
+			new CollectionController(user, urlParams.get('page') ?? '1', isOnSetsPage, urlParams.get('uid') ?? undefined,urlParams.get('search')??undefined);
 		}
 	}
 }
