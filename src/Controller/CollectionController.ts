@@ -1,69 +1,110 @@
 import User from '../Data/User';
 import Set from '../Data/Set';
 import Piece from '../Data/Piece';
-import {Color} from '../Data/Piece';
-import {getSets, getPieces, getColors } from '../Model/CatalogManager';
+import { Color } from '../Data/Piece';
+import { getSets, getPieces, getColors } from '../Model/CatalogManager';
 import { htmlToElement } from '../util';
-import { addToCollection } from '../Model/CollectionManager';
+import { addToCollection, CollectionManager } from '../Model/CollectionManager';
+import firebase from 'firebase';
+
+
 
 export class CollectionController {
 	user: User;
-	constructor(user: User, page: string, sets: boolean, uid?: string, search?: string, ) {
+	constructor(user: User, page: string, sets: boolean, uid?: string, search?: string,) {
 		this.user = user;
 		const searchButton = document.querySelector('#searchButton') as HTMLButtonElement;
 		const searchInput = document.querySelector('#searchText') as HTMLInputElement;
 		const titleText = document.querySelector('#titleText') as HTMLAnchorElement;
-		searchInput.value = search??"";
+		searchInput.value = search ?? "";
 		console.log(searchInput);
 		const nextPageButton = document.querySelector("#nextPageButton") as HTMLButtonElement;
 		const prevPageButton = document.querySelector("#prevPageButton") as HTMLButtonElement;
 		const setsSelection = document.querySelector("#setsSelection") as HTMLAnchorElement;
 		const piecesSelection = document.querySelector("#piecesSelection") as HTMLAnchorElement;
+		const myCollectionButton = document.querySelector("#myCollectionButton") as HTMLAnchorElement;
+		const button = document.querySelector('#modalButton') as HTMLButtonElement;
+		const signOut = document.querySelector('#signOutButton') as HTMLAnchorElement;
 		nextPageButton.addEventListener("click", () => {
-			const params = `?uid=${uid}&page=${parseInt(page)+1}&search=${search??""}`;
+			const params = `?uid=${uid}&page=${parseInt(page) + 1}&search=${search ?? ""}`;
 			window.location.href = `/collection.html${params}`;
 		})
-		if(page!="1") {
-			prevPageButton.addEventListener("click",() => {
-				const params = `?uid=${uid??""}&page=${parseInt(page)-1}&search=${search??""}`;
-			window.location.href = `/collection.html${params}`;
+		if (page != "1") {
+			prevPageButton.addEventListener("click", () => {
+				const params = `?uid=${uid ?? ""}&page=${parseInt(page) - 1}&search=${search ?? ""}`;
+				window.location.href = `/collection.html${params}`;
 			})
 		} else {
 			prevPageButton.style.display = "none";
 		}
 		searchButton.addEventListener("click", () => {
-			const params = `?uid=${uid??""}&page=1&search=${searchInput.value??""}`
-			window.location.href= `/collection.html${params}`
+			const params = `?uid=${uid ?? ""}&page=1&search=${searchInput.value ?? ""}&set=${sets ? sets : ""}`
+			window.location.href = `/collection.html${params}`;
 		})
-
+		myCollectionButton.href = `/collection.html?set=true&uid=${user.uid}`;
+		signOut.addEventListener("click", () => {
+			firebase.auth().signOut();
+		})
 		if (!uid && sets) {
 			//Sets Catalog
 			getSets(user, page, search).then((setsResponse) => {
-				this.updateSetsList(setsResponse.sets)
-				if(!setsResponse.hasNextPage) {
+				this.updateSetsList(setsResponse.sets, (index) => {
+					const set = setsResponse.sets[index];
+					const uid = this.user.uid;
+					addToCollection(set, uid).then(() => {
+						console.log('Added set to collection');
+						const modal = document.querySelector('setInfo') as HTMLDivElement;
+
+					});
+					console.log('figure this out later');
+				})
+				if (!setsResponse.hasNextPage) {
 					nextPageButton.style.display = "none";
 				}
 			});
 			console.log(searchButton);
 			titleText.innerHTML = "Catalog"
 			setsSelection.classList.add("active");
+			button.innerHTML = 'Add To Collection';
+
 		}
-		if(!uid && ! sets) {
+		if (!uid && !sets) {
 			//Pieces Catalog
 			piecesSelection.classList.add("active");
-			getPieces(user,page,search).then((piecesResponse) => {
-				this.updatePieceList(piecesResponse.pieces);
+			getPieces(user, page, search).then((piecesResponse) => {
+				this.updatePieceList(piecesResponse.pieces, (index: number) => {
+					
+				});
 			})
 		}
-		if(uid && sets) {
+		if (uid && sets) {
 			// Sets collection
+			console.log("On Sets collection");
+			setsSelection.classList.add("active");
+			const collectionManager = new CollectionManager(user);
+			collectionManager.beginListening(uid, () => {
+				this.updateSetsList(collectionManager.getSets(), (index) => {
+					const set = collectionManager.getSets()[index].id;
+					if (set) {
+						collectionManager.removeSet(set);
+					} else {
+						console.log("you messed up");
+					}
+				});
+			});
+			button.innerHTML = 'Remove From Collection';
+			if (user.uid !== uid) {
+				button.style.display = "none";
+			}
 		}
-		if(uid && !sets) {
+		console.log(!!uid + " " + !!sets);
+		if (uid && !sets) {
+			piecesSelection.classList.add("active");
 			//Pieces Collection
 		}
 	}
 
-	updateSetsList(sets: Set[]): void {
+	updateSetsList(sets: Set[], buttonFunction: (index: number) => void): void {
 		const newList = htmlToElement('<div id="listContainer" class="row"></div>') as HTMLDivElement;
 
 		for (let i = 0; i < sets.length; i++) {
@@ -81,18 +122,11 @@ export class CollectionController {
 				setPieceCount.innerHTML = `pieces: ${sets[i].pieceCount}`;
 				setImage.src = sets[i].image;
 				setName.innerHTML = sets[i].name;
-				button.addEventListener('click', () => {
-					const set = sets[i];
-					const uid = this.user.uid;
-					addToCollection(set, uid).then(() => {
-						console.log('Added set to collection');
-						const modal = document.querySelector('setInfo') as HTMLDivElement;
-
-					});
-					console.log('figure this out later');
+				var newButton = button.cloneNode(true);
+				button.parentNode?.replaceChild(newButton, button);
+				newButton.addEventListener('click', () => {
+					buttonFunction(i);
 				});
-				button.innerHTML = 'Add To Collection';
-
 			})
 			newList.appendChild(newCard);
 		}
@@ -108,14 +142,14 @@ export class CollectionController {
 		oldList.parentElement.appendChild(newList);
 	}
 
-	updatePieceList(pieces: Piece[]): void {
+	updatePieceList(pieces: Piece[], buttonFunction: (index: number)=>void): void {
 		const newList = htmlToElement('<div id="listContainer" class="row"></div>') as HTMLDivElement;
-		for(let i = 0; i<pieces.length;i++) {
+		for (let i = 0; i < pieces.length; i++) {
 			const newCard = this._createPieceCard(pieces[i]);
-			newCard.addEventListener('click',() => {
+			newCard.addEventListener('click', () => {
 				const newSelect = htmlToElement('<select id="colorListSelect"></select>') as HTMLSelectElement;
-				const colors = getColors(this.user,pieces[i].partNum).then((colors: Color[]) => {
-					for(let i = 0; i<colors.length;i++) {
+				const colors = getColors(this.user, pieces[i].partNum).then((colors: Color[]) => {
+					for (let i = 0; i < colors.length; i++) {
 						const newOption = htmlToElement(`<option value=${colors[i].name}>${colors[i].name}</option>`) as HTMLOptionElement;
 						newSelect.add(newOption);
 					}
@@ -127,12 +161,18 @@ export class CollectionController {
 					const partTitleDisplay = document.querySelector("#modalPartTitle") as HTMLHeadingElement;
 					const partImage = document.querySelector("#modalPartImage") as HTMLImageElement;
 					const partNumDisplay = document.querySelector("#modalPartNumber") as HTMLParagraphElement;
+					const button = document.querySelector("#modalPartButton") as HTMLButtonElement;
 					partNameDisplay.innerHTML = `Part Name: ${pieces[i].name}`;
 					partTitleDisplay.innerHTML = pieces[i].partNum;
 					partImage.src = pieces[i].partImage;
 					partNumDisplay.innerHTML = `Part Number: ${pieces[i].partNum}`;
+					var newButton = button.cloneNode(true);
+					button.parentNode?.replaceChild(newButton, button);
+					newButton.addEventListener('click', () => {
+						buttonFunction(i);
 					});
-					console.log("TODO: Create Piece Modal");
+				});
+				console.log("TODO: Create Piece Modal");
 			})
 			newList.appendChild(newCard);
 		}

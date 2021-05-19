@@ -4,6 +4,7 @@ export default interface Set {
 	setNumber: string;
 	year: number;
 	pieceCount: number;
+	id?: string;
 }
 
 export interface SetsResponse {

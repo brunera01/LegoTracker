@@ -27,7 +27,7 @@ const authStateChanged = (user: User | null) => {
 		document.location.href = '/';
 	} else if (user && (document.querySelector('#loginPage') || document.querySelector('#createAccountPage'))) {
 		console.log('sign in successful');
-		document.location.href = `/collection.html?uid=${user.uid}`;
+		document.location.href = `/collection.html?uid=${user.uid}&set=true`;
 	} else {
 		if (user) {
 			const isOnSetsPage = !!urlParams.get('set');

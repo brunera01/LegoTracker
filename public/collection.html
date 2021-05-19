@@ -38,10 +38,10 @@
         <a class="navbar-brand">Lego Tracker</a>
       </header>
       <ul class="list-group">
-        <a class="list-group-item">My Collection</a>
-        <a class="list-group-item" href="/collection.html">Search Catalog</a>
+        <a id="myCollectionButton" class="list-group-item">My Collection</a>
+        <a class="list-group-item" href="/collection.html?set=true">Search Catalog</a>
         <a class="list-group-item">View Collections</a>
-        <a class="list-group-item">Sign Out</a>
+        <a id="signOutButton" class="list-group-item">Sign Out</a>
       </ul>
     </div>
     <main class="bmd-layout-content">
@@ -98,7 +98,7 @@
             </select>
           </div>
           <div class="modal-footer">
-            <button id="modalButton" type="button" class="btn btn-primary" data-dismiss="modal">Add To collection</button>
+            <button id="modalPartButton" type="button" class="btn btn-primary" data-dismiss="modal">Add To collection</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>

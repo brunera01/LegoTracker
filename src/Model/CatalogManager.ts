@@ -61,6 +61,14 @@ export async function getColors(user: User, part: string): Promise<Color[]> {
 	}))
 }
 
+// export async function getPiecesInSet(user: User, setNum: string): Promise<Piece[]> {
+// 	const {APIKey} = user;
+// 	const url = `https://rebrickable.com/api/v3/lego/sets/${setNum}/parts`;
+// 	const response = await fetch(url, {headers: {authorization: `key ${APIKey}`}});
+
+
+// }
+
 interface rebrickableSetResponse {
 	count: number;
 	next: string;
