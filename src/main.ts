@@ -36,7 +36,6 @@ const authStateChanged = (user: User | null) => {
 	}
 }
 
-
 const userManager = new UserManager(authStateChanged);
 if (document.querySelector('#loginPage')) {
 	new LoginController(userManager);

@@ -1,7 +1,8 @@
 export default interface Piece {
-	partNum: string;
+	partNumber: string;
 	name: string;
-	partImage: string;
+	image: string;
+	color?: string;
 	id?: string;
 }
 

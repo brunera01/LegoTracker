@@ -2,25 +2,22 @@ import { SetsResponse } from '../Data/Set';
 import User from '../Data/User';
 import Set from '../Data/Set'
 import firebase from 'firebase';
-import Piece from '../Data/Piece';
-import { Color } from '../Data/Piece';
 
 
-const SET_COLLECTION = "setInfo";
-const PIECE_COLLECTION = "pieceInfo";
+const SET_COLLECTION = 'setInfo';
 
-const IMAGE = "imgUrl";
-const PIECE_COUNT = "pieces";
-const SET_NUM = "setNum";
-const YEAR = "year";
-const UID = "uid";
-const SET_NAME = "setName";
+const IMAGE = 'imgUrl';
+const PIECE_COUNT = 'pieces';
+const SET_NUM = 'setNum';
+const YEAR = 'year';
+const UID = 'uid';
+const SET_NAME = 'setName';
 export interface ICollectionManager {
 	getItems: (user: User, page: number) => SetsResponse;
 }
 
-export function addToCollection(set: Set, uid: string) {
-	return firebase.firestore().collection(SET_COLLECTION).add({
+export function addSetToCollection(set: Set, uid: string): void{
+	firebase.firestore().collection(SET_COLLECTION).add({
 		[IMAGE]: set.image,
 		[PIECE_COUNT]: set.pieceCount,
 		[SET_NUM]: set.setNumber,
@@ -30,15 +27,7 @@ export function addToCollection(set: Set, uid: string) {
 	});
 }
 
-// export function addPieceToCollection(piece: Piece, count: number, uid: string, color?: Color,set?: Set) {
-// 	return firebase.firestore().collection(PIECE_COLLECTION).add({
-// 		IMAGE: color?color.image:piece.partImage,
-// 		UID: uid,
-// 		SET_NUM: set?set.setNumber:"-1",
-
-// 	})
-// }
-export class CollectionManager {
+export class SetManager {
 	user: User;
 	_documentSnapshot: firebase.firestore.QuerySnapshot;
 	ref: firebase.firestore.CollectionReference;
@@ -47,20 +36,21 @@ export class CollectionManager {
 		this.user = user;
 		this._documentSnapshot = {} as firebase.firestore.QuerySnapshot;
 		this.ref = firebase.firestore().collection(SET_COLLECTION);
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		this._unsubscribe = () => {};
 	}
-	beginListening(uid: string, changeListener: ()=>void) {
+	beginListening(uid: string, changeListener: ()=>void): void {
 		// changeListener();
-		let query = this.ref.where(UID,"==",uid);
+		const query = this.ref.where(UID,'==',uid);
 		this._unsubscribe = query.onSnapshot((querySnapshot) => {
-			console.log("update received");
+			console.log('update received');
 			this._documentSnapshot = querySnapshot;
 			console.log(this._documentSnapshot);
 			changeListener();
 		})
 	}
-	stopListening() {
-
+	stopListening(): void{
+		this._unsubscribe();
 	}
 	getSetAtindex(index: number): Set {
 		const snapshot = this._documentSnapshot.docs[index];
@@ -86,30 +76,7 @@ export class CollectionManager {
 		)
 	}
 
-	removeSet(setId: string) {
-			this.ref.doc(setId).delete();
+	removeSet(setId: string): void {
+		this.ref.doc(setId).delete();
 	}
-}
-
-
-interface rebrickableResponse {
-	count: number;
-	next: string;
-	results: rebrickableSet[];
-}
-
-interface rebrickableSet {
-	set_num: string;
-	name: string;
-	year: number;
-	num_parts: number;
-	set_img_url: string;
-}
-
-interface rebrickableSetRequest extends Record<string, string> {
-	page: string;
-	page_size: string;
-	search: string;
-	ordering: string;
-	min_parts: string;
 }

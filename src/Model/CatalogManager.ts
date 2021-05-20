@@ -38,12 +38,11 @@ export async function getPieces(user: User, page: string, search?: string): Prom
 	const result = {
 		hasNext: !!content.next,
 		pieces: content.results.map((piece) => ({
-			partNum: piece.part_num,
+			partNumber: piece.part_num,
 			name: piece.name,
-			partImage: piece.part_img_url,
+			image: piece.part_img_url,
 		}))
 	};
-
 	return result;
 }
 
