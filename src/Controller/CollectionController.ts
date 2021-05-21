@@ -18,16 +18,11 @@ export class CollectionController {
 		this.user = user;
 		const searchButton = document.querySelector('#searchButton') as HTMLButtonElement;
 		const searchInput = document.querySelector('#searchText') as HTMLInputElement;
-		const titleText = document.querySelector('#titleText') as HTMLAnchorElement;
 		searchInput.value = search ?? '';
 		const nextPageButton = document.querySelector('#nextPageButton') as HTMLButtonElement;
 		const prevPageButton = document.querySelector('#prevPageButton') as HTMLButtonElement;
-		const setsSelection = document.querySelector('#setsSelection') as HTMLAnchorElement;
-		const piecesSelection = document.querySelector('#piecesSelection') as HTMLAnchorElement;
 		const myCollectionButton = document.querySelector('#myCollectionButton') as HTMLAnchorElement;
-		const button = document.querySelector('#modalButton') as HTMLButtonElement;
 		const signOut = document.querySelector('#signOutButton') as HTMLAnchorElement;
-		const partButton = document.querySelector('#modalPartButton') as HTMLButtonElement;
 		nextPageButton.addEventListener('click', () => {
 			const params = `?uid=${uid}&page=${parseInt(page) + 1}&search=${search ?? ''}`;
 			window.location.href = `/collection.html${params}`;
@@ -62,35 +57,7 @@ export class CollectionController {
 		}
 		console.log(!!uid + ' ' + !!sets);
 		if (uid && !sets) {
-			piecesSelection.classList.add('active');
-			//Pieces Collection
-			searchBar.style.display = 'none';
-			const pieceManager = new PieceManager(user);
-			pieceManager.beginListening(uid, () => {
-				this.updatePieceList(pieceManager.getPieces(), (index) => {
-					const piece = pieceManager.getPieces()[index].id;
-					if (piece) {
-						pieceManager.removePiece(piece);
-					} else {
-						console.log('you messed up');
-					}
-				}, async (_, piece) => ([
-					{
-						name: piece.color ?? '',
-						image: piece.image ?? ''
-					}
-				]));
-			});
-			partButton.innerHTML = 'Remove From Collection';
-			if (user.uid !== uid) {
-				partButton.style.display = 'none';
-			}
-			piecesSelection.href = `/collection.html?uid=${uid}`;
-			setsSelection.href = `/collection.html?uid=${uid}&set=true`;
-			button.innerHTML = 'Remove From Collection';
-			if (user.uid !== uid) {
-				button.style.display = 'none';
-			}
+			this.initializePiecesCollection(page, uid);
 		}
 	}
 
