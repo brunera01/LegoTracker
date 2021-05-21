@@ -1,0 +1,21 @@
+[debug] [2021-05-21T16:03:42.395Z] ----------------------------------------------------------------------
+[debug] [2021-05-21T16:03:42.397Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\brunera1\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2021-05-21T16:03:42.397Z] CLI Version:   9.6.1
+[debug] [2021-05-21T16:03:42.397Z] Platform:      win32
+[debug] [2021-05-21T16:03:42.398Z] Node Version:  v14.16.0
+[debug] [2021-05-21T16:03:42.398Z] Time:          Fri May 21 2021 12:03:42 GMT-0400 (Eastern Daylight Time)
+[debug] [2021-05-21T16:03:42.398Z] ----------------------------------------------------------------------
+[debug] [2021-05-21T16:03:42.398Z] 
+[debug] [2021-05-21T16:03:42.404Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-05-21T16:03:42.405Z] > authorizing via signed-in user
+[debug] [2021-05-21T16:03:42.405Z] [iam] checking project legotracker-63157 for permissions ["firebase.projects.get"]
+[debug] [2021-05-21T16:03:42.407Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-05-21T16:03:42.407Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-05-21T16:03:42.528Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","date":"Fri, 21 May 2021 16:03:42 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-05-21T16:03:42.541Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/legotracker-63157:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2021-05-21T16:03:42.655Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 21 May 2021 16:03:42 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=38","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-05-21T16:03:42.656Z] > refreshing access token with scopes: []
+[debug] [2021-05-21T16:03:42.657Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
