@@ -40,6 +40,10 @@ export class CollectionController {
 		} else {
 			prevPageButton.style.display = 'none';
 		}
+		if(uid) {
+			prevPageButton.style.display = 'none';
+			nextPageButton.style.display = 'none';
+		}
 		searchButton.addEventListener('click', () => {
 			const params = `?uid=${uid ?? ''}&page=1&search=${searchInput.value ?? ''}&set=${sets ? sets : ''}`
 			window.location.href = `/collection.html${params}`;
