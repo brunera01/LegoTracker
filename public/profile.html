@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <title>Lego Tracker</title>
+</head>
+
+<body>
+  <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
+    <header class="bmd-layout-header">
+      <div class="navbar navbar-dark bg-faded justify-content-start">
+        <button class="navbar-toggler" type="button" data-toggle="drawer" data-target="#dw-s2">
+          <span class="sr-only">Toggle drawer</span>
+          <i class="material-icons">menu</i>
+        </button>
+        <a id="titleText" class="navbar-brand" href="collection.html?set=true">&nbsp;&nbsp;My Collection</a>
+      </div>
+    </header>
+    <div id="dw-s2" class="bmd-layout-drawer bg-faded">
+      <header>
+        <a class="navbar-brand">Lego Tracker</a>
+      </header>
+      <ul class="list-group">
+        <a id="myCollectionButton" class="list-group-item">My Collection</a>
+        <a class="list-group-item" href="/collection.html?set=true">Search Catalog</a>
+        <a id="profileSelection" class="list-group-item" href="/profile.html">Profile</a>
+        <a id="signOutButton" class="list-group-item" href="#">Sign Out</a>
+      </ul>
+    </div>
+    <main class="bmd-layout-content">
+      <div class="container">
+        <div id="profilePage" class="container page-container">
+          <div class="form-group bmd-form-group">
+            <label for="apiKeyInput" class="bmd-label">API Key</label>
+            <input type="text" class="form-control" id="apiKeyInput">
+          </div>
+          <button class="btn btn-primary" id="submitApiKey">Save Changes</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="build/jquery.min.js"></script>
+  <script src="build/popper.js"></script>
+  <script src="build/bootstrap-material-design.js"></script>
+  <script>
+    $("body").bootstrapMaterialDesign();
+  </script>
+  <!-- <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+  <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+  <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+  <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+  <script src="/__/firebase/init.js"></script> -->
+  <script src="build/bundle.js"></script>
+</body>
+
+</html>

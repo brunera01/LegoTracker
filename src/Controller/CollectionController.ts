@@ -7,7 +7,8 @@ import { getSets, getPieces, getColors } from '../Model/CatalogManager';
 import { htmlToElement } from '../util';
 import { addSetToCollection, SetManager } from '../Model/CollectionManager';
 import { addPieceToCollection, PieceManager } from '../Model/PieceManager';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 
 
@@ -48,60 +49,16 @@ export class CollectionController {
 			firebase.auth().signOut();
 		})
 		if (!uid && sets) {
-			//Sets Catalog
-			getSets(user, page, search).then((setsResponse) => {
-				this.updateSetsList(setsResponse.sets, (index) => {
-					const set = setsResponse.sets[index];
-					const uid = this.user.uid;
-					addSetToCollection(set, uid);
-					console.log('figure this out later');
-				})
-				if (!setsResponse.hasNextPage) {
-					nextPageButton.style.display = 'none';
-				}
-			});
-			console.log(searchButton);
-			titleText.innerHTML = 'Catalog'
-			setsSelection.classList.add('active');
-			button.innerHTML = 'Add To Collection';
-
+			this.initializeSetsCatalog(page, search);
 		}
 		if (!uid && !sets) {
 			//Pieces Catalog
-			titleText.innerHTML = 'Catalog'
-			piecesSelection.classList.add('active');
-			getPieces(user, page, search).then((piecesResponse) => {
-				this.updatePieceList(piecesResponse.pieces, (index: number) => {
-					const piece = piecesResponse.pieces[index];
-					const uid = this.user.uid;
-					addPieceToCollection(piece, uid);
-				},
-				(user, piece) => getColors(user, piece.partNumber));
-			})
+			this.initializePiecesCatalog(page, search);
 		}
 		const searchBar = document.querySelector('#searchBar') as HTMLDivElement;
 		if (uid && sets) {
 			// Sets collection
-			console.log('On Sets collection');
-			searchBar.style.display = 'none';
-			setsSelection.classList.add('active');
-			const setManager = new SetManager(user);
-			setManager.beginListening(uid, () => {
-				this.updateSetsList(setManager.getSets(), (index) => {
-					const set = setManager.getSets()[index].id;
-					if (set) {
-						setManager.removeSet(set);
-					} else {
-						console.log('you messed up');
-					}
-				});
-			});
-			button.innerHTML = 'Remove From Collection';
-			if (user.uid !== uid) {
-				button.style.display = 'none';
-			}
-			piecesSelection.href = `/collection.html?uid=${uid}`;
-			setsSelection.href = `/collection.html?uid=${uid}&set=true`;
+			this.initializeSetsCollection(page, uid);
 		}
 		console.log(!!uid + ' ' + !!sets);
 		if (uid && !sets) {
@@ -135,6 +92,102 @@ export class CollectionController {
 				button.style.display = 'none';
 			}
 		}
+	}
+
+	initializeSetsCatalog(page: string, search?: string): void {
+		const searchInput = document.querySelector('#searchText') as HTMLInputElement;
+		searchInput.value = search ?? '';
+		getSets(this.user, page, search).then((setsResponse) => {
+			this.updateSetsList(setsResponse.sets, (index) => {
+				const set = setsResponse.sets[index];
+				const uid = this.user.uid;
+				addSetToCollection(set, uid);
+				console.log('figure this out later');
+			})
+			if (!setsResponse.hasNextPage) {
+				const nextPageButton = document.querySelector('#nextPageButton') as HTMLButtonElement;
+				nextPageButton.style.display = 'none';
+			}
+		});
+		const titleText = document.querySelector('#titleText') as HTMLAnchorElement;
+		titleText.innerHTML = 'Catalog'
+		const setsSelection = document.querySelector('#setsSelection') as HTMLAnchorElement;
+		setsSelection.classList.add('active');
+		const button = document.querySelector('#modalButton') as HTMLButtonElement;
+		button.innerHTML = 'Add To Collection';
+	}
+
+	initializePiecesCatalog(page: string, search?: string): void {
+		const titleText = document.querySelector('#titleText') as HTMLAnchorElement;
+		titleText.innerHTML = 'Catalog'
+		const piecesSelection = document.querySelector('#piecesSelection') as HTMLAnchorElement;
+		piecesSelection.classList.add('active');
+		getPieces(this.user, page, search).then((piecesResponse) => {
+			this.updatePieceList(piecesResponse.pieces, (index: number) => {
+				const piece = piecesResponse.pieces[index];
+				const uid = this.user.uid;
+				addPieceToCollection(piece, uid);
+			}, (user, piece) => getColors(user, piece.partNumber));
+		})
+	}
+
+	initializeSetsCollection(page: string, uid: string): void {
+		const searchBar = document.querySelector('#searchBar') as HTMLDivElement;
+		searchBar.style.display = 'none';
+		const piecesSelection = document.querySelector('#piecesSelection') as HTMLAnchorElement;
+		piecesSelection.href = `/collection.html?uid=${uid}`;
+		const setsSelection = document.querySelector('#setsSelection') as HTMLAnchorElement;
+		setsSelection.href = `/collection.html?uid=${uid}&set=true`;
+		setsSelection.classList.add('active');
+		const setManager = new SetManager(this.user);
+		setManager.beginListening(uid, () => {
+			this.updateSetsList(setManager.getSets(), (index) => {
+				const set = setManager.getSets()[index].id;
+				if (set) {
+					setManager.removeSet(set);
+				} else {
+					console.log('you messed up');
+				}
+			});
+		});
+		const button = document.querySelector('#modalButton') as HTMLButtonElement;
+		button.innerHTML = 'Remove From Collection';
+		if (this.user.uid !== uid) {
+			button.style.display = 'none';
+		}
+	}
+
+	initializePiecesCollection(page: string, uid: string): void {
+		const searchBar = document.querySelector('#searchBar') as HTMLDivElement;
+		searchBar.style.display = 'none';
+		const piecesSelection = document.querySelector('#piecesSelection') as HTMLAnchorElement;
+		piecesSelection.classList.add('active');
+		piecesSelection.classList.add('active');
+		const setsSelection = document.querySelector('#setsSelection') as HTMLAnchorElement;
+		setsSelection.href = `/collection.html?uid=${uid}&set=true`;
+		const pieceManager = new PieceManager(this.user);
+		pieceManager.beginListening(uid, () => {
+			this.updatePieceList(pieceManager.getPieces(), (index) => {
+				const piece = pieceManager.getPieces()[index].id;
+				if (piece) {
+					pieceManager.removePiece(piece);
+				} else {
+					console.log('you messed up');
+				}
+			}, async (_, piece) => ([
+				{
+					name: piece.color ?? '',
+					image: piece.image ?? ''
+				}
+			]));
+		});
+		const partButton = document.querySelector('#modalPartButton') as HTMLButtonElement;
+		partButton.innerHTML = 'Remove From Collection';
+		if (this.user.uid !== uid) {
+			partButton.style.display = 'none';
+		}
+		piecesSelection.href = `/collection.html?uid=${uid}`;
+		setsSelection.href = `/collection.html?uid=${uid}&set=true`;
 	}
 
 	updateSetsList(sets: Set[], buttonFunction: (index: number) => void): void {
@@ -173,10 +226,10 @@ export class CollectionController {
 		oldList.hidden = true;
 
 		oldList.parentElement.appendChild(newList);
-		
+
 		const titles = document.querySelectorAll('.card-title');
 		titles.forEach(element => {
-			clamp(element as HTMLParagraphElement, {clamp: 3});
+			clamp(element as HTMLParagraphElement, { clamp: 3 });
 		})
 	}
 
@@ -236,7 +289,7 @@ export class CollectionController {
 
 		const titles = document.querySelectorAll('.card-title');
 		titles.forEach(element => {
-			clamp(element as HTMLParagraphElement, {clamp: 3});
+			clamp(element as HTMLParagraphElement, { clamp: 3 });
 		})
 	}
 

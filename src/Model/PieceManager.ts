@@ -1,6 +1,7 @@
 import { SetsResponse } from '../Data/Set';
 import User from '../Data/User';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import Piece from '../Data/Piece';
 
 

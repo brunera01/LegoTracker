@@ -7,6 +7,7 @@ import CreateAccountController from './Controller/CreateAccountController'
 import User from './Data/User';
 import { UserManager } from './Model/UserManager';
 import { CollectionController } from './Controller/CollectionController';
+import { ProfileController } from './Controller/ProfileController';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyB0j0AJr111FHLNuH6_7lJdgo4E-h92C6c',
@@ -28,10 +29,12 @@ const authStateChanged = (user: User | null) => {
 	} else if (user && (document.querySelector('#loginPage') || document.querySelector('#createAccountPage'))) {
 		console.log('sign in successful');
 		document.location.href = `/collection.html?uid=${user.uid}&set=true`;
+	} else if (user && document.querySelector('#profilePage')) {
+		new ProfileController(userManager);
 	} else {
 		if (user) {
 			const isOnSetsPage = !!urlParams.get('set');
-			new CollectionController(user, urlParams.get('page') ?? '1', isOnSetsPage, urlParams.get('uid') ?? undefined,urlParams.get('search')??undefined);
+			new CollectionController(user, urlParams.get('page') ?? '1', isOnSetsPage, urlParams.get('uid') ?? undefined, urlParams.get('search') ?? undefined);
 		}
 	}
 }
@@ -41,4 +44,6 @@ if (document.querySelector('#loginPage')) {
 	new LoginController(userManager);
 } else if (document.querySelector('#createAccountPage')) {
 	new CreateAccountController();
+} else if (document.querySelector('#profilePage') && userManager._user) {
+	new ProfileController(userManager);
 }

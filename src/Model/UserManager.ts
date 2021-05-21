@@ -1,4 +1,6 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 import User from '../Data/User';
 
 const COLLECTION_NAME = 'users';
@@ -46,26 +48,28 @@ export class UserManager {
 	isUserSignedIn(): boolean {
 		return !!this._user;
 	}
-
-
 }
 
 export function createUser(
 	username: string,
 	password: string,
-	APIKey: string,
+	apiKey: string,
 	handleCreateAccountFailed: (error: firebase.auth.Error) => void
 ): void {
 	firebase.auth().createUserWithEmailAndPassword(username, password).then(credentials => {
-		if(!credentials.user) {
+		if (!credentials.user) {
 			console.error('Error');
 			return;
 		}
-		firebase.firestore().collection(COLLECTION_NAME).doc(credentials.user.uid).set({
-			[API_KEY]: APIKey	
-		});
+		setApiKey(apiKey, credentials.user.uid);
 	}).catch(error => {
 		handleCreateAccountFailed(error);
+	});
+}
+
+export function setApiKey(apiKey: string, uid: string): Promise<void> {
+	return firebase.firestore().collection(COLLECTION_NAME).doc(uid).set({
+		[API_KEY]: apiKey
 	});
 }
 

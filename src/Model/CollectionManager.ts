@@ -1,7 +1,8 @@
 import { SetsResponse } from '../Data/Set';
 import User from '../Data/User';
 import Set from '../Data/Set'
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 
 const SET_COLLECTION = 'setInfo';

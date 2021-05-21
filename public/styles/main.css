@@ -55,6 +55,10 @@ body {
     font-weight: 300;
 }
 
+#apiKeyInput {
+    margin-top: 1rem;
+}
+
 @media (max-width: 992px) {
     .set-card {
         max-width: 200px;

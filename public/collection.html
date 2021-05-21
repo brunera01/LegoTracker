@@ -18,7 +18,7 @@
           <span class="sr-only">Toggle drawer</span>
           <i class="material-icons">menu</i>
         </button>
-        <a id="titleText"class="navbar-brand" href="collection.html?set=true">&nbsp;&nbsp;My Collection</a>
+        <a id="titleText" class="navbar-brand" href="collection.html?set=true">&nbsp;&nbsp;My Collection</a>
         <ul class="nav nav-tabs nav-fill">
           <li class="nav-item">
             <a id="setsSelection" class="nav-link" href="/collection.html?set=true">Sets</a>
@@ -40,6 +40,7 @@
       <ul class="list-group">
         <a id="myCollectionButton" class="list-group-item">My Collection</a>
         <a class="list-group-item" href="/collection.html?set=true">Search Catalog</a>
+        <a id="profileSelection" class="list-group-item" href="/profile.html">Profile</a>
         <a id="signOutButton" class="list-group-item" href="#">Sign Out</a>
       </ul>
     </div>
@@ -52,7 +53,7 @@
         </div>
       </div>
     </main>
-    <button id="prevPageButton"class="btn">Previous Page</button>
+    <button id="prevPageButton" class="btn">Previous Page</button>
     <button id="nextPageButton" class="btn">Next Page</button>
 
   </div>
@@ -97,20 +98,14 @@
             </select>
           </div>
           <div class="modal-footer">
-            <button id="modalPartButton" type="button" class="btn btn-primary" data-dismiss="modal">Add To collection</button>
+            <button id="modalPartButton" type="button" class="btn btn-primary" data-dismiss="modal">Add To
+              collection</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <datalist id="colors">
-    <option value="Blue">
-    <option value="Black">
-    <option value="Green">
-    <option value="White">
-
-  </datalist>
 
   <script src="build/jquery.min.js"></script>
   <script src="build/popper.js"></script>
@@ -118,11 +113,11 @@
   <script>
     $("body").bootstrapMaterialDesign();
   </script>
-  <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+  <!-- <script src="/__/firebase/7.18.0/firebase-app.js"></script>
   <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
   <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
   <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
-  <script src="/__/firebase/init.js"></script>
+  <script src="/__/firebase/init.js"></script> -->
   <script src="build/bundle.js"></script>
 </body>
 
